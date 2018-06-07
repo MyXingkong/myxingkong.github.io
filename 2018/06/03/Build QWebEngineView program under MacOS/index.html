@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang=zh-cn>
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content="This is Polairs&#39;s blog">
+  <meta name="keywords" content="xingkong,myxingkong,polaris,polaris&#39;blog">
+  
+    <link rel="icon" href="">
+  
+    
+  <title>Build QWebEngineView program under MacOS | Polairs&#39;s blog</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/lib/jquery.fancybox.min.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+  <header>
+  <div class="header-container">
+    <a class='logo' href="/">
+      <span>Polairs's blog</span>
+    </a>
+    <ul class="right-header">
+      
+        <li class="nav-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/about" class="item-link">About</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/archives" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/tags" class="item-link">Tags</a>
+          
+        </li>
+      
+    </ul>
+  </div>
+</header>
+
+  <main id='post'>
+  <div class="content">
+    <article>
+        <section class="content markdown-body">
+          <h1>Build QWebEngineView program under MacOS</h1>
+          <div class='post-meta'>
+            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018/06/03</time>
+            
+              | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Build/">Build</a>
+  </div>
+
+
+
+            
+            
+              | 
+                  <i class="fa fa-tags" aria-hidden="true"></i>
+                
+               
+  <a href="/tags/#PySide2" class='tag'>PySide2</a>
+
+  <a href="/tags/#PyInstaller" class='tag'>PyInstaller</a>
+
+  <a href="/tags/#Build" class='tag'>Build</a>
+
+
+            
+          </div>
+          <p>If we have a <strong>QWebEngineView</strong> program like this that needs to be built</p>
+<p><a href="https://github.com/MyXingkong/my_code/blob/master/python/webengine.py" target="_blank" rel="noopener">QWebEngineView Demo</a></p>
+<p>We execute the following command.<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pyinstaller -D $HOME/webengine/webengine.py</span><br></pre></td></tr></table></figure></p>
+<p>After executing the command, we get two directories.</p>
+<ul>
+<li>build</li>
+<li>dist</li>
+</ul>
+<p>We go to the <strong>$HOME/webengine/dist/webengine/</strong> directory,Find the <strong>webengine</strong> file,This is the entrance to the program. Let’s double-click to run it. But the program did not work as expected and output the following prompt.<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Could not find QtWebEngineProcess</span><br><span class="line">Abort trap: 6</span><br><span class="line">logout</span><br><span class="line">Saving session...</span><br><span class="line">...copying shared history...</span><br><span class="line">...saving history...truncating history files...</span><br><span class="line">...completed.</span><br></pre></td></tr></table></figure></p>
+<p>Don’t worry, let’s access the Qt installation path. </p>
+<p>Then we visit the <strong>lib</strong> directory, find <strong>QtWebEngineCore.framework</strong> double-click on it. Then we copy the <strong>Resources</strong> directory and <strong>Helpers/QtWebEngineProcess.app</strong> to <strong>$HOME/webengine/dist/webengine</strong> directory. Let’s copy the <strong>Resources</strong> directory again to the <strong>$HOME/webengine/dist/</strong> directory</p>
+<p>Finally, we in the $HOME/webengine/dist/webengine now executing the following command.<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">install_name_tool -change @rpath/QtWebEngineCore.framework/Versions/5/QtWebEngineCore @loader_path/../../../QtWebEngineCore QtWebEngineProcess.app/Contents/MacOS/QtWebEngineProcess</span><br><span class="line">install_name_tool -change @rpath/QtQuick.framework/Versions/5/QtQuick @loader_path/../../../QtQuick QtWebEngineProcess.app/Contents/MacOS/QtWebEngineProcess</span><br><span class="line">install_name_tool -change @rpath/QtQml.framework/Versions/5/QtQml @loader_path/../../../QtQml QtWebEngineProcess.app/Contents/MacOS/QtWebEngineProcess</span><br><span class="line">install_name_tool -change @rpath/QtNetwork.framework/Versions/5/QtNetwork @loader_path/../../../QtNetwork QtWebEngineProcess.app/Contents/MacOS/QtWebEngineProcess</span><br><span class="line">install_name_tool -change @rpath/QtCore.framework/Versions/5/QtCore @loader_path/../../../QtCore QtWebEngineProcess.app/Contents/MacOS/QtWebEngineProcess</span><br><span class="line">install_name_tool -change @rpath/QtGui.framework/Versions/5/QtGui @loader_path/../../../QtGui QtWebEngineProcess.app/Contents/MacOS/QtWebEngineProcess</span><br><span class="line">install_name_tool -change @rpath/QtWebChannel.framework/Versions/5/QtWebChannel @loader_path/../../../QtWebChannel QtWebEngineProcess.app/Contents/MacOS/QtWebEngineProcess</span><br><span class="line">install_name_tool -change @rpath/QtPositioning.framework/Versions/5/QtPositioning @loader_path/../../../QtPositioning QtWebEngineProcess.app/Contents/MacOS/QtWebEngineProcess</span><br></pre></td></tr></table></figure></p>
+<p>Now, let’s double-click the <strong>webengine</strong> program to work.</p>
+
+        </section>
+    </article>
+    
+        
+  </div>
+  <aside>
+    
+  </aside>
+</main>
+
+
+
+  <footer>
+  <div class="copyright">
+    <div>
+      &copy; 2018 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a>&nbsp
+    </div>
+    <div>
+      Theme by <a href="https://github.com/lewis-geek/hexo-theme-Aath" target="_blank">Aath</a>
+      Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/lib/in-view.min.js"></script>
+<script src="/lib/lodash.min.js"></script>
+<script>
+  var isDown = true
+  var oldY = 0
+  inView.offset(50)
+
+  document.body.addEventListener('touchstart', function(){});
+  
+  window.addEventListener('scroll', _.throttle(e => {
+    var currentY = window.scrollY
+    if((oldY - currentY) < 0) {
+      isDown = true
+    } else {
+      isDown = false
+    }
+    oldY = currentY
+  }, 250))
+
+  $("article img").each(function() {
+      var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
+      $(this).wrapAll(strA);
+  });
+
+  $('.toc-link').each(function() {
+      var href = $(this).attr("href");
+      
+      inView(href).on('exit', () => {
+        if (isDown) {
+          handleActive(href)
+        }
+      })
+
+      inView(href).on('enter', () => {
+        if (!isDown) {
+          handleActive(href)
+        }
+      })
+
+      this.onclick = function(e) {
+        var pos = $(href).offset().top - 10;
+        $("html,body").animate({scrollTop: pos}, 300);
+        setTimeout(() => {
+          handleActive(href)
+        }, 350)
+        return false
+      }
+  })
+
+  function handleActive(href) {
+    document.querySelectorAll('.toc-link').forEach(elm => {
+      elm.classList.remove('active')
+    })
+    document.querySelector(".toc [href='"+ href +"']").classList.add('active')
+  }
+</script>
+<script src="/lib/jquery.fancybox.min.js"></script>
+
+
+</body>
+</html>
