@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang=zh-cn>
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content="This is Polairs&#39;s blog">
+  <meta name="keywords" content="xingkong,myxingkong,polaris,polaris&#39;blog">
+  
+    <link rel="icon" href="">
+  
+    
+  <title>Building ImageMagick portable binary files under centos7 | Polairs&#39;s blog</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/lib/jquery.fancybox.min.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+  <header>
+  <div class="header-container">
+    <a class='logo' href="/">
+      <span>Polairs's blog</span>
+    </a>
+    <ul class="right-header">
+      
+        <li class="nav-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/about" class="item-link">About</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/archives" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/tags" class="item-link">Tags</a>
+          
+        </li>
+      
+    </ul>
+  </div>
+</header>
+
+  <main id='post'>
+  <div class="content">
+    <article>
+        <section class="content markdown-body">
+          <h1>Building ImageMagick portable binary files under centos7</h1>
+          <div class='post-meta'>
+            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2018/06/09</time>
+            
+              | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Build/">Build</a>
+  </div>
+
+
+
+            
+            
+              | 
+                  <i class="fa fa-tag" aria-hidden="true"></i>
+                
+               
+  <a href="/tags/#ImageMagick" class='tag'>ImageMagick</a>
+
+
+            
+          </div>
+          <h2 id="Installation-dependence"><a href="#Installation-dependence" class="headerlink" title="Installation dependence"></a>Installation dependence</h2><p>First, let’s install the format dependencies that ImageMagick requires.<br>Let’s use root to execute the following command.<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum install -y libjpeg libjpeg-devel</span><br><span class="line">yum install -y libpng libpng-devel</span><br><span class="line">yum install -y libtiff libtiff-devel</span><br><span class="line">yum install -y libungif libungif-devel</span><br><span class="line">yum install -y freetype freetype-devel</span><br><span class="line">yum install -y zlib zlib-devel</span><br><span class="line">yum install -y pkg-config</span><br><span class="line">yum install -y gcc-c++</span><br></pre></td></tr></table></figure></p>
+<h2 id="Download-and-unzip-the-source-code"><a href="#Download-and-unzip-the-source-code" class="headerlink" title="Download and unzip the source code"></a>Download and unzip the source code</h2><p>If no error message is prompted, the dependency is successfully installed.</p>
+<p>Now, we execute the following command to download the source code for ImageMagick.<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd $HOME</span><br><span class="line">wget https://www.imagemagick.org/download/ImageMagick.tar.gz</span><br></pre></td></tr></table></figure></p>
+<p>After completing the download, we execute the following command to decompress the source code.<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tar zxf ImageMagick.tar.gz</span><br></pre></td></tr></table></figure></p>
+<p>Next, we go to the ImageMagick directory.<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd $HOME/ImageMagick-*</span><br></pre></td></tr></table></figure></p>
+<h2 id="Build-binaries"><a href="#Build-binaries" class="headerlink" title="Build binaries"></a>Build binaries</h2><p>Now, we execute the following commands for pre-build configuration and dependency checking.<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">./configure --disable-installed --disable-shared --enable-delegate-build --disable-dependency-tracking --with-x=no --without-perl --with-freetype=no --with-magick-plus-plus=no --without-frozenpaths --with-bzlib=no --with-png=yes --with-jpeg=yes --with-tiff=yes --prefix=$HOME/ImageMagick-Final</span><br></pre></td></tr></table></figure></p>
+<p>If no error is prompted, then we execute the following code.<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">make clean &amp;&amp; make &amp;&amp; make install</span><br></pre></td></tr></table></figure></p>
+<p>If there are no errors, we have successfully built ImageMagick’s portable binary.</p>
+<p>The path to the built portable binary is $HOME/ imagemagick-final /bin/magick, which we can copy to other CentOS systems, and we don’t need to install any dependencies.</p>
+<p>We can call it from the console by typing the following command.<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">./magick 1.jpg 1.png</span><br></pre></td></tr></table></figure></p>
+
+        </section>
+    </article>
+    
+        
+  </div>
+  <aside>
+    
+    <div class="toc-container">
+        <h1>目录</h1>
+        <div class="content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Installation-dependence"><span class="toc-number">1.</span> <span class="toc-text">Installation dependence</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Download-and-unzip-the-source-code"><span class="toc-number">2.</span> <span class="toc-text">Download and unzip the source code</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Build-binaries"><span class="toc-number">3.</span> <span class="toc-text">Build binaries</span></a></li></ol>
+        </div>
+    </div>
+    
+  </aside>
+</main>
+
+
+
+  <footer>
+  <div class="copyright">
+    <div>
+      &copy; 2018 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a>&nbsp
+    </div>
+    <div>
+      Theme by <a href="https://github.com/lewis-geek/hexo-theme-Aath" target="_blank">Aath</a>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/lib/in-view.min.js"></script>
+<script src="/lib/lodash.min.js"></script>
+<script>
+  var isDown = true
+  var oldY = 0
+  inView.offset(50)
+
+  document.body.addEventListener('touchstart', function(){});
+  
+  window.addEventListener('scroll', _.throttle(e => {
+    var currentY = window.scrollY
+    if((oldY - currentY) < 0) {
+      isDown = true
+    } else {
+      isDown = false
+    }
+    oldY = currentY
+  }, 250))
+
+  $("article img").each(function() {
+      var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
+      $(this).wrapAll(strA);
+  });
+
+  $('.toc-link').each(function() {
+      var href = $(this).attr("href");
+      
+      inView(href).on('exit', () => {
+        if (isDown) {
+          handleActive(href)
+        }
+      })
+
+      inView(href).on('enter', () => {
+        if (!isDown) {
+          handleActive(href)
+        }
+      })
+
+      this.onclick = function(e) {
+        var pos = $(href).offset().top - 10;
+        $("html,body").animate({scrollTop: pos}, 300);
+        setTimeout(() => {
+          handleActive(href)
+        }, 350)
+        return false
+      }
+  })
+
+  function handleActive(href) {
+    document.querySelectorAll('.toc-link').forEach(elm => {
+      elm.classList.remove('active')
+    })
+    document.querySelector(".toc [href='"+ href +"']").classList.add('active')
+  }
+</script>
+<script src="/lib/jquery.fancybox.min.js"></script>
+
+
+</body>
+</html>
